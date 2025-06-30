@@ -1,0 +1,30 @@
+name: Client-Based Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      client:
+        description: 'Choose client'
+        required: true
+        type: choice
+        options:
+          - alpha
+          - beta
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show selected client
+        run: echo "Client is ${{ github.event.inputs.client }}"
+
+      - name: Run alpha-only step
+        if: ${{ github.event.inputs.client == 'alpha' }}
+        run: echo "👉 Running alpha-specific test"
+
+      - name: Run beta-only step
+        if: ${{ github.event.inputs.client == 'beta' }}
+        run: echo "👉 Running beta-specific test"
+
+      - name: Final step
+        run: echo "✅ Done for ${{ github.event.inputs.client }}"
